@@ -29,5 +29,16 @@ rootProject.name = "spring"
 rootProject.children.each {project ->
 	project.buildFileName = "${project.name}.gradle"
 }
+
 include 'wyb'
+include 'wybannopriciple01'
+include 'wybannopriciple02ext'
+include 'wybannopriciple03ioc'
+include 'wybannopriciple04aop'
+include 'wybannopriciple04aop'
+include 'wybannopriciple05trans'
+include 'wybannopriciple06logging'
+include 'wybangle-spring-aop'
+include 'wybangle-spring-transaction'
+include 'wyb-springwebflux'
 
