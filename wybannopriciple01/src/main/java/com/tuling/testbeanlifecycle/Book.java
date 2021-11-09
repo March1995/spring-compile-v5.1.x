@@ -8,7 +8,7 @@ import javax.annotation.PreDestroy;
 /**
  * Created by smlz on 2019/5/24.
  */
-//@Component
+@Component
 public class Book {
 
     public Book() {
