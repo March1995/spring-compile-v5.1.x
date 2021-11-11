@@ -255,12 +255,19 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.trace("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+			/**
+			 * 若从缓存中的sharedInstance是原始的bean(属性还没有进行实例化,那么在这里进行处理)
+			 * 或者是factoryBean 返回的是工厂bean的而不是我们想要的getObject()返回的bean ,就会在这里处理
+			 *
+			 * 在Bean的生命周期中，getObjectForBeanInstance方法是频繁使用的方法，无论是从缓存中获取出来的bean
+			 * 还是根据scope创建出来的bean,都要通过该方法进行检查。
+			 **/
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 
 		else {
 			// Fail if we're already creating this bean instance:
-			// We're assumably within a circular reference.
+			// We're assumably within a circular reference. prototype无法解决循环依赖
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -295,7 +302,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
 
-				// Guarantee initialization of beans that the current bean depends on.
+				// Guarantee initialization of beans that the current bean depends on. @DependsOn注解保证bean初始化顺序
 				String[] dependsOn = mbd.getDependsOn();
 				if (dependsOn != null) {
 					for (String dep : dependsOn) {
@@ -303,8 +310,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw new BeanCreationException(mbd.getResourceDescription(), beanName,
 									"Circular depends-on relationship between '" + beanName + "' and '" + dep + "'");
 						}
+						//注册依赖
 						registerDependentBean(dep, beanName);
 						try {
+							//优先创建依赖的对象
 							getBean(dep);
 						}
 						catch (NoSuchBeanDefinitionException ex) {
@@ -317,6 +326,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// Create bean instance.
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
+						//在getSingleton房中进行回调用的
 						try {
 							return createBean(beanName, mbd, args);
 						}
@@ -328,6 +338,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw ex;
 						}
 					});
+					// 对创建的 bean进行后续的加工
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 
