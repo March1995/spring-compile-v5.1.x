@@ -267,13 +267,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		else {
 			// Fail if we're already creating this bean instance:
-			// We're assumably within a circular reference. prototype无法解决循环依赖
+			// We're assumably within a circular reference. prototype无法解决循环依赖,因为prototype spring不缓存
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
 
-			// Check if bean definition exists in this factory.
+			// Check if bean definition exists in this factory. 获取父容器
 			BeanFactory parentBeanFactory = getParentBeanFactory();
+			//如果beanDefinitionMap中所有以及加载的bean不包含 本次加载的beanName，那么尝试取父容器取检测
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
 				String nameToLookup = originalBeanName(name);
@@ -326,7 +327,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				// Create bean instance.
 				if (mbd.isSingleton()) {
 					sharedInstance = getSingleton(beanName, () -> {
-						//在getSingleton房中进行回调用的
+						//在getSingleton方法中进行回调用的
 						try {
 							return createBean(beanName, mbd, args);
 						}
@@ -1659,6 +1660,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected Object getObjectForBeanInstance(
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
+		//判断name为以 &开头的但是 又不是factoryBean类型的 就抛出异常
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
 		if (BeanFactoryUtils.isFactoryDereference(name)) {
 			if (beanInstance instanceof NullBean) {
