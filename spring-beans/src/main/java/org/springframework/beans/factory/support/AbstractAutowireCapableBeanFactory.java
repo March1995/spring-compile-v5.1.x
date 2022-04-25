@@ -605,9 +605,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// 为当前的bean填充属性，发现依赖等....解决循环依赖就是在这个地方
 			/**
-			 * 1)获取了bw的属性列表
-			 * 2)在属性列表中被填充的之前，通过InstantiationAwareBeanPostProcessor 对bw的属性进行修改
-			 * 3)判断自动装配模型来判断是调用byTypeh还是byName
+			 * 1) 获取了bw的属性列表
+			 * 2) 在属性列表中被填充的之前，通过InstantiationAwareBeanPostProcessor 对bw的属性进行修改
+			 * 3) 判断自动装配模型来判断是调用byTypeh还是byName
 			 * 4）再次应用后置处理，用于动态修改属性列表 pvs 的内容
 			 * 5）把属性设置到bw中
 			 */
