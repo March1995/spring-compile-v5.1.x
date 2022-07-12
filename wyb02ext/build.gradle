@@ -1,0 +1,20 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group 'org.springframework'
+version '5.1.17.BUILD-SNAPSHOT'
+
+description = "wyb02ext"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+
+dependencies {
+    compile(project(":spring-context"))
+
+    testCompile group: 'junit', name: 'junit', version:'4.11'
+}
