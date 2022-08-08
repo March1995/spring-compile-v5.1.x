@@ -1834,7 +1834,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Invocation of init method failed", ex);
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
-			//调用Bean的后置处理器的post方法 动态代理AOP 若产生循环依赖里面的wrapIfNecessary不会执行，会执行三级缓存的wrapIfNecessary
+			//调用Bean的后置处理器的post方法 动态代理AOP 若产生循环依赖里面的wrapIfNecessary不会执行，会执行三级缓存的wrapIfNecessary  aop中报错提前暴露引用earlyProxyReferences
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 

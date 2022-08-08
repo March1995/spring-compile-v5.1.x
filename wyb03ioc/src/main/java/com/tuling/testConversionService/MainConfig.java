@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ public class MainConfig {
 	@Bean
 	public ConversionServiceFactoryBean conversionService() {
 		ConversionServiceFactoryBean factoryBean = new ConversionServiceFactoryBean();
-		Set<Converter> converterSet = new HashSet<Converter>();
+		Set<Converter<String, Date>> converterSet = new HashSet<>();
 		converterSet.add(new String2DateConversionService());
 		factoryBean.setConverters(converterSet);
 		return factoryBean;
