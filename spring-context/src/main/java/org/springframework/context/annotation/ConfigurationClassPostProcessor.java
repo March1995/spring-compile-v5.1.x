@@ -263,7 +263,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		// 去IOC容器中的获取Bean定义的名称 没有解析之前，系统候选的bean定义配置(有自己的 有系统自带的)
 		String[] candidateNames = registry.getBeanDefinitionNames();
 
-		//循环Bean定义的名称 找出自己的传入的主配置类的bean定义信息  configCandidates
+		// 循环Bean定义的名称 找出自己的传入的主配置类的bean定义信息  configCandidates
 		for (String beanName : candidateNames) {
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
 			if (ConfigurationClassUtils.isFullConfigurationClass(beanDef) ||
@@ -328,7 +328,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		//已经被解析的配置类(由于do while 那么mainclass就一定会被解析,被解析的size为1)
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
-			// 通过配置解析器真正的解析配置类
+			// 通过配置解析器真正的解析配置类 仅仅是注册@ComponentScan扫描的
 			parser.parse(candidates);
 			// 进行校验
 			parser.validate();
@@ -343,7 +343,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 						registry, this.sourceExtractor, this.resourceLoader, this.environment,
 						this.importBeanNameGenerator, parser.getImportRegistry());
 			}
-			// @CompentScan是直接注册Bean定义信息的,但是通过获取@Import,@Bean这种的注解还没有注册的bean定义
+			// @ComponentScan是直接注册Bean定义信息的,但是通过获取@Import,@Bean这种的注解还没有注册的bean定义
 			this.reader.loadBeanDefinitions(configClasses);
 			// 把系统解析过我们自己的组件放在alreadyParsed
 			alreadyParsed.addAll(configClasses);

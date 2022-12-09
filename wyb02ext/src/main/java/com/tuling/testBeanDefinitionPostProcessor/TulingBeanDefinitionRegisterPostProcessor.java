@@ -8,7 +8,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TulingBeanDefinationRegisterPostProcessor implements BeanDefinitionRegistryPostProcessor {
+public class TulingBeanDefinitionRegisterPostProcessor implements BeanDefinitionRegistryPostProcessor {
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 		System.out.println("TulingBeanDefinitionRegisterPostProcessor的postProcessBeanDefinitionRegistry方法");

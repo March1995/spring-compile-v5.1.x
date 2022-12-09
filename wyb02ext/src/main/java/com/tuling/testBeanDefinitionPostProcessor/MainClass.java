@@ -2,9 +2,6 @@ package com.tuling.testBeanDefinitionPostProcessor;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-/**
- * Created by smlz on 2019/5/26.
- */
 public class MainClass {
 
     public static void main(String[] args) {
